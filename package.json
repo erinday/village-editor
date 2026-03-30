@@ -1,0 +1,45 @@
+{
+  "name": "@erinday/village-editor",
+  "version": "0.0.1",
+  "description": "",
+  "license": "MIT",
+  "author": "Erinday",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "dev": "echo \"dev not configured yet\"",
+    "build": "echo \"build not configured yet\"",
+    "typecheck": "echo \"typecheck not configured yet\"",
+    "test": "echo \"test not configured yet\""
+  },
+  "keywords": [
+    "editor",
+    "typescript",
+    "npm-package"
+  ],
+  "packageManager": "pnpm@10.8.1",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false,
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "bugs": {
+    "url": ""
+  },
+  "homepage": "",
+  "publishConfig": {
+    "access": "public"
+  },
+}

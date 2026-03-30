@@ -1,0 +1,8 @@
+.github
+playground
+coverage
+node_modules
+src
+.vscode
+.idea
+*.log
