@@ -1,4 +1,4 @@
-import './style.css';
+import '@/style.css';
 import { VillageEditor } from '../../src';
 
 const app = document.querySelector<HTMLDivElement>('#app');
