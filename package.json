@@ -9,10 +9,19 @@
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
-    "dev": "echo \"dev not configured yet\"",
-    "build": "echo \"build not configured yet\"",
-    "typecheck": "echo \"typecheck not configured yet\"",
-    "test": "echo \"test not configured yet\""
+    "dev": "vite --config playground/vite.config.ts",
+    "build": "tsup",
+    "watch": "tsup --watch",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest",
+    "prepublishOnly": "pnpm typecheck && pnpm build"
+  },
+  "devDependencies": {
+    "@types/node": "^25.5.0",
+    "tsup": "^8.5.1",
+    "typescript": "^6.0.2",
+    "vite": "^8.0.3",
+    "vitest": "^4.1.2"
   },
   "keywords": [
     "editor",
@@ -27,9 +36,7 @@
       "require": "./dist/index.cjs"
     }
   },
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "sideEffects": false,
   "repository": {
     "type": "git",
@@ -41,5 +48,5 @@
   "homepage": "",
   "publishConfig": {
     "access": "public"
-  },
+  }
 }
