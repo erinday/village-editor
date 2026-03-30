@@ -1,4 +1,4 @@
 export interface VillageEditorOptions {
-  placeholder?: string;
-  readOnly?: boolean;
+  rootElement: HTMLElement;
+  content: string;
 }

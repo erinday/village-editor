@@ -6,7 +6,11 @@
   <title>Village Editor Playground</title>
 </head>
 <body>
-<div id="app"></div>
-<script type="module" src="/src/main.ts"></script>
+  <div class="playground-card">
+    <h1>Village Editor Playground</h1>
+    <pre>${JSON.stringify(editor.options, null, 2)}</pre>
+    <div id="app"></div>
+  </div>
+  <script type="module" src="/src/main.ts"></script>
 </body>
 </html>

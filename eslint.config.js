@@ -20,4 +20,4 @@ export default defineConfig([
     },
   },
   tseslint.configs.recommended,
-]);
+])
