@@ -1,2 +1,2 @@
-export { VillageEditor } from './core/editor';
-export type { VillageEditorOptions } from './types';
+export { VillageEditor } from './core/editor'
+export type { VLE } from './types'

@@ -10,17 +10,23 @@
   "types": "./dist/index.d.ts",
   "scripts": {
     "dev": "vite --config playground/vite.config.ts",
-    "build": "tsup",
+    "build:js": "tsup",
+    "build:styles": "sass src/styles/index.scss dist/styles.css --no-source-map",
+    "build": "pnpm build:styles && pnpm build:js",
     "watch": "tsup --watch",
     "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "test": "vitest",
     "prepublishOnly": "pnpm typecheck && pnpm build"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@stylistic/eslint-plugin": "^5.10.0",
     "@types/node": "^25.5.0",
     "eslint": "^10.1.0",
     "globals": "^17.4.0",
+    "sass": "^1.98.0",
     "tsup": "^8.5.1",
     "typescript": "^6.0.2",
     "typescript-eslint": "^8.57.2",
@@ -38,12 +44,15 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
-    }
+    },
+    "./styles.css": "./dist/styles.css"
   },
   "files": [
     "dist"
   ],
-  "sideEffects": false,
+  "sideEffects": [
+    "*.css"
+  ],
   "repository": {
     "type": "git",
     "url": ""
