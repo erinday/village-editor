@@ -1,33 +1,39 @@
-export namespace VLE {
-  export enum MessageTypes {
-    'TEXT' = 'text',
-  }
+export enum VLEMessageTypes {
+  TEXT = 'text',
+  TITLE = 'title'
+}
 
-  export interface Options {
-    rootElement: HTMLElement;
-    content: Content;
-  }
+export interface VLEOptions {
+  rootElement: HTMLElement;
+  content?: VLEContent;
+}
 
-  export interface Views {
-    main: HTMLDivElement;
-    content: HTMLDivElement;
-    buttonAdd: HTMLButtonElement;
-  }
+export interface VLEViews {
+  main: HTMLDivElement;
+  content: HTMLDivElement;
+  buttonAdd: HTMLButtonElement;
+}
 
-  export interface Content {
-    v: number;
-    data: Array<{
-      type: MessageTypes;
-      value: string;
-    }>;
-  }
+export interface VLEContent {
+  v: number;
+  data: Array<{
+    type: VLEMessageTypes;
+    value: string;
+  }>;
+}
 
-  export interface MessageText {
-    type: MessageTypes.TEXT;
-    id: number;
-    wrap: HTMLElement;
-    input: HTMLTextAreaElement;
-    value: string | null;
-    focus (): void;
-  }
+export type VLEMessage = VLEMessageText | VLEMessageTitle
+
+export interface VLEMessageTitle {
+  type: VLEMessageTypes.TITLE;
+  id: number;
+  view: HTMLElement;
+  input: HTMLTextAreaElement;
+}
+
+export interface VLEMessageText {
+  type: VLEMessageTypes.TEXT;
+  id: number;
+  view: HTMLDivElement;
+  input: HTMLTextAreaElement;
 }
