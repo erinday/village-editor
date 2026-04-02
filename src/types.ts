@@ -8,9 +8,18 @@ export namespace VLE {
     content: Content;
   }
 
+  export interface Views {
+    main: HTMLDivElement;
+    content: HTMLDivElement;
+    buttonAdd: HTMLButtonElement;
+  }
+
   export interface Content {
     v: number;
-    data: Array<string>;
+    data: Array<{
+      type: MessageTypes;
+      value: string;
+    }>;
   }
 
   export interface MessageText {

@@ -1,10 +1,14 @@
 import { VLE } from '../types'
 import { getId } from '../utils/getId'
 
+const V = 1
+
 export class VillageEditor {
-  readonly #rootElement: HTMLElement
-  // readonly #content: VLE.Content
-  readonly #buttonAdd: HTMLButtonElement
+  #views: VLE.Views = {
+    main: this.createNode<HTMLDivElement>('village-editor'),
+    content: this.createNode<HTMLDivElement>('village-editor__content'),
+    buttonAdd: this.createButtonAdd()
+  }
   #list: Array<VLE.MessageText> = []
 
   constructor (options: VLE.Options) {
@@ -13,20 +17,35 @@ export class VillageEditor {
         `VillageEditor: rootElement must be an instance of HTMLElement, received: ${options.rootElement}`
       )
     }
-    this.#buttonAdd = this.createButtonAdd()
-    this.#rootElement = options.rootElement
-    // this.#content = options.content
-    this.#rootElement.append(this.#buttonAdd)
-    this.create()
+    this.createView(options.rootElement)
+  }
+
+  private createView (rootNode: HTMLElement): void {
+    this.#views.content.addEventListener('input', () => {
+      this.getData()
+    })
+    this.#views.main.append(this.#views.content, this.#views.buttonAdd)
+    rootNode.append(this.#views.main)
   }
 
   writeMessage (message: VLE.MessageText): void {
     this.#list.push(message)
-    this.#buttonAdd.before(message.wrap)
+    this.#views.content.append(message.wrap)
   }
 
   getData (): void {
-    const data = this.#list
+    const data: VLE.Content = {
+      v: V,
+      data: []
+    }
+    for(let i = 0, l = this.#views.content.childNodes.length; i < l; i++) {
+      const element = this.#views.content.childNodes[i] as HTMLElement
+      const id = Number(element.dataset.id) || 0
+      if (!id) continue
+      const message = this.#list.find((message: VLE.MessageText) => message.id === id) || null
+      if (!message || !message.input.value) continue
+      data.data.push({ type: message.type, value: message.input.value})
+    }
     console.dir(data)
   }
 
@@ -36,13 +55,10 @@ export class VillageEditor {
     return element
   }
 
-  createMessage (): HTMLDivElement {
-    return this.createNode('village-editor__item')
-  }
-
-  private create (): void {
-    const contElement: HTMLElement = this.createNode('village-editor')
-    this.#rootElement.append(contElement)
+  createMessage (id: number): HTMLDivElement {
+    const element = this.createNode('village-editor__item')
+    element.dataset.id = `${id}`
+    return element
   }
 
   createButtonAdd (): HTMLButtonElement {
@@ -61,7 +77,7 @@ export class VillageEditor {
     const data: VLE.MessageText = {
       id,
       type: VLE.MessageTypes.TEXT,
-      wrap: this.createMessage(),
+      wrap: this.createMessage(id),
       input: view,
       value: null,
       focus () {
