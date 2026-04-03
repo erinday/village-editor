@@ -1,3 +1,8 @@
+import {VillageEditor} from './core/editor';
+
+export type Prettify<T> = { [K in keyof T]: T[K]; } & {}
+export type Modify<T, R> = Prettify<Omit<T, keyof R> & R>
+
 export enum VLEMessageTypes {
   TEXT = 'text',
   TITLE = 'title'
@@ -6,6 +11,10 @@ export enum VLEMessageTypes {
 export interface VLEOptions {
   rootElement: HTMLElement;
   content?: VLEContent;
+  buttonAdd: {
+    isHide?: boolean;
+    action: (ctx: VillageEditor) => void;
+  };
 }
 
 export interface VLEViews {

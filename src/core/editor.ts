@@ -19,7 +19,30 @@ export class VillageEditor {
         received: ${options.rootElement}`
       )
     }
-    this.createView(options.rootElement)
+    this.#views.content.addEventListener('input', this.handleGetData)
+    this.#views.main.append(this.#views.content)
+    if (options.buttonAdd) {
+      if (!options.buttonAdd.isHide) {
+        options.rootElement.append(this.#views.buttonAdd)
+      }
+      if (options.buttonAdd.action) {
+        this.#views.buttonAdd.addEventListener('click', () => {
+          options.buttonAdd.action(this)
+        })
+      }
+    }
+
+
+    // if (!options.buttonAdd?.isHide) {
+    //
+    //   if (options.buttonAdd?.action) {
+    //     this.#views.buttonAdd.addEventListener('click', () => {
+    //       if (options.buttonAdd) {
+    //         options.buttonAdd.action(this)
+    //       }})
+    //   }
+    // }
+    options.rootElement.append(this.#views.main)
   }
 
   handleGetData = (): void => {
@@ -74,7 +97,6 @@ export class VillageEditor {
     const button: HTMLButtonElement = this.createNode<HTMLButtonElement>(['village-editor__button'], 'button')
     button.textContent = 'Добавить параграф'
     button.type = 'button'
-    button.addEventListener('click', () => this.handleCreateMessageText())
     return button
   }
 
