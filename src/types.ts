@@ -1,9 +1,9 @@
-import {VillageEditor} from './core/editor';
+import { VillageEditor } from './core/editor'
 
 export type Prettify<T> = { [K in keyof T]: T[K]; } & {}
 export type Modify<T, R> = Prettify<Omit<T, keyof R> & R>
 
-export enum VLEMessageTypes {
+export enum VLEBlockTypes {
   TEXT = 'text',
   TITLE = 'title'
 }
@@ -11,38 +11,36 @@ export enum VLEMessageTypes {
 export interface VLEOptions {
   rootElement: HTMLElement;
   content?: VLEContent;
-  buttonAdd: {
-    isHide?: boolean;
-    action: (ctx: VillageEditor) => void;
+  bot?: {
+    create: (ctx: VillageEditor) => HTMLElement;
   };
 }
 
 export interface VLEViews {
   main: HTMLDivElement;
   content: HTMLDivElement;
-  buttonAdd: HTMLButtonElement;
 }
 
 export interface VLEContent {
   v: number;
   data: Array<{
-    type: VLEMessageTypes;
+    type: VLEBlockTypes;
     value: string;
   }>;
 }
 
-export type VLEMessage = VLEMessageText | VLEMessageTitle
+export type VLEBlock = VLEBlockText | VLEBlockTitle
 
-export interface VLEMessageTitle {
-  type: VLEMessageTypes.TITLE;
+export interface VLEBlockTitle {
+  type: VLEBlockTypes.TITLE;
   id: number;
   view: HTMLElement;
-  input: HTMLTextAreaElement;
+  getValue: () => string | null;
 }
 
-export interface VLEMessageText {
-  type: VLEMessageTypes.TEXT;
+export interface VLEBlockText {
+  type: VLEBlockTypes.TEXT;
   id: number;
   view: HTMLDivElement;
-  input: HTMLTextAreaElement;
+  getValue: () => string | null;
 }

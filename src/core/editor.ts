@@ -1,15 +1,9 @@
-import {
-  VLEContent, VLEMessage,
-  VLEMessageText,
-  VLEMessageTypes,
-  VLEOptions,
-  VLEViews,
-} from '../types'
+import { VLEBlock, VLEContent, VLEOptions, VLEViews } from '../types'
 
 export class VillageEditor {
   readonly #version: number = 1
   #views: VLEViews = this.createViews()
-  #list: Array<VLEMessage> = []
+  #list: Array<VLEBlock> = []
   #lastId: number = 0
 
   constructor (options: VLEOptions) {
@@ -21,27 +15,10 @@ export class VillageEditor {
     }
     this.#views.content.addEventListener('input', this.handleGetData)
     this.#views.main.append(this.#views.content)
-    if (options.buttonAdd) {
-      if (!options.buttonAdd.isHide) {
-        options.rootElement.append(this.#views.buttonAdd)
-      }
-      if (options.buttonAdd.action) {
-        this.#views.buttonAdd.addEventListener('click', () => {
-          options.buttonAdd.action(this)
-        })
-      }
+    if (options.bot) {
+      const bot: HTMLElement = options.bot.create(this)
+      this.#views.main.append(bot)
     }
-
-
-    // if (!options.buttonAdd?.isHide) {
-    //
-    //   if (options.buttonAdd?.action) {
-    //     this.#views.buttonAdd.addEventListener('click', () => {
-    //       if (options.buttonAdd) {
-    //         options.buttonAdd.action(this)
-    //       }})
-    //   }
-    // }
     options.rootElement.append(this.#views.main)
   }
 
@@ -49,25 +26,16 @@ export class VillageEditor {
     this.getData()
   }
 
-  handleCreateMessageText = this.createMessageText
-
   createViews (): VLEViews {
     return {
       main: this.createNode<HTMLDivElement>(['village-editor']),
       content: this.createNode<HTMLDivElement>(['village-editor__content']),
-      buttonAdd: this.createButtonAdd()
     }
   }
 
-  createView (rootNode: HTMLElement): void {
-    this.#views.content.addEventListener('input', this.handleGetData)
-    this.#views.main.append(this.#views.content, this.#views.buttonAdd)
-    rootNode.append(this.#views.main)
-  }
-
-  writeMessage (message: VLEMessageText): void {
-    this.#list.push(message)
-    this.#views.content.append(message.view)
+  appendBlock (block: VLEBlock): void {
+    this.#list.push(block)
+    this.#views.content.append(block.view)
   }
 
   getData (): VLEContent {
@@ -79,11 +47,11 @@ export class VillageEditor {
       const element = this.#views.content.childNodes[i] as HTMLElement
       const id = Number(element.dataset.id) || 0
       if (!id) continue
-      const message = this.#list.find((message: VLEMessage) => message.id === id) || null
-      if (!message || !message.input.value) continue
-      data.data.push({ type: message.type, value: message.input.value})
+      const message = this.#list.find((message: VLEBlock) => message.id === id) || null
+      if (!message) continue
+      const value: string | null = message.getValue()
+      if (value) data.data.push({ type: message.type, value })
     }
-    console.dir(data)
     return data
   }
 
@@ -93,46 +61,8 @@ export class VillageEditor {
     return element
   }
 
-  createButtonAdd (): HTMLButtonElement {
-    const button: HTMLButtonElement = this.createNode<HTMLButtonElement>(['village-editor__button'], 'button')
-    button.textContent = 'Добавить параграф'
-    button.type = 'button'
-    return button
-  }
-
-  createMessageText (): VLEMessageText {
-    const id: number = this.getNewId()
-    const view: HTMLDivElement = this.createNode<HTMLDivElement>(['village-editor__message', 'village-editor__message_text'])
-    const panel: HTMLDivElement = this.createPanel()
-    const input: HTMLTextAreaElement = this.createNode<HTMLTextAreaElement>(['village-editor__text'], 'textarea')
-    view.dataset.id = `${id}`
-    input.name = `text-${id}`
-    view.append(panel, input)
-    const data: VLEMessageText = {
-      id,
-      type: VLEMessageTypes.TEXT,
-      view,
-      input,
-    }
-    this.writeMessage(data)
-    return data
-  }
-
   getNewId (): number {
     return ++this.#lastId
-  }
-
-  createPanel (): HTMLDivElement {
-    const panel: HTMLDivElement = this.createNode<HTMLDivElement>(['village-editor__panel'])
-    const buttonUp: HTMLButtonElement = this.createNode<HTMLButtonElement>(['village-editor__panel', 'village-editor__panel_up'], 'button')
-    const buttonDown: HTMLButtonElement = this.createNode<HTMLButtonElement>(['village-editor__panel', 'village-editor__panel_down'], 'button')
-    buttonUp.type = buttonDown.type = 'button'
-    buttonUp.textContent = 'Вверх'
-    buttonDown.textContent = 'Вниз'
-    panel.append(buttonUp, buttonDown)
-    // todo buttonUp.addEventListener('click', ...)
-    // todo buttonDown.addEventListener('click', ...)
-    return panel
   }
 
   destroy (): void {

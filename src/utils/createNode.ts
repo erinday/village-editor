@@ -2,7 +2,7 @@ import { Prettify } from '../types'
 
 interface VLECreateNodeParams {
   classNames: Array<string>;
-  tag?: 'div' | 'textarea' | string;
+  tag?: 'div' | 'textarea' | 'button' | string;
 }
 
 export function VLECreateNode<T extends HTMLElement = HTMLDivElement> (params: VLECreateNodeParams): T {

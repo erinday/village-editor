@@ -1,17 +1,21 @@
 import '@/style.css'
 import '../../src/styles/index.sass'
 import { VillageEditor } from '../../src'
-import {VLECreateMessageText} from '../../src/core/createMessageText'
+import { vleCreateMessageText } from '../../src/core/createMessageText'
+import { vleCreateBot } from '../../src/core/createBot'
 
 const app = document.querySelector<HTMLDivElement>('#app')
 
 if (app) {
   const editor = new VillageEditor({
     rootElement: app,
-    buttonAdd: {
-      isHide: false,
-      action: (ctx): void => {
-        VLECreateMessageText(ctx)
+    bot: {
+      create: (ctx: VillageEditor): HTMLElement => {
+        return vleCreateBot({
+          action: (): void => {
+            vleCreateMessageText(ctx)
+          }
+        })
       }
     }
   })

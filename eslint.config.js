@@ -26,6 +26,8 @@ export default defineConfig([
       '@stylistic/member-delimiter-style': ['warn'],
       "@typescript-eslint/no-namespace": 'off',
       'no-unused-vars': 'off',
+      'object-curly-spacing': ['warn', 'always'],
+      '@/object-curly-spacing': ['warn', 'always'],
       '@typescript-eslint/no-unused-vars': [
         'error',
         {
